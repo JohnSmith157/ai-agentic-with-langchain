@@ -4,28 +4,20 @@ load_dotenv()
 from langchain.agents import create_agent
 from langchain.tools import tool
 from langchain_core.messages import HumanMessage
-from tavily import TavilyClient
+from langchain_tavily import TavilySearch
 
-tavily = TavilyClient()
-
-@tool
-def search(query: str) -> str:
-    """
-    Tool that searches over internet
-    Args:
-        query: The query to search for
-    Returns:
-        The search result
-    """
-    print(f"Searching the web for {query}")
-    return tavily.search(query=query)
-
-tools = [search]
+tools = [TavilySearch(max_results=5)]
 agent = create_agent(model="gpt-5", tools=tools)
 
 def main():
     print("Hello, World!")
-    result = agent.invoke({"messages":HumanMessage(content="What is the weather in Tokyo?")})
+    result = agent.invoke(
+        {
+            "messages": HumanMessage(
+                content="Search for 3 job postings for an ai engineer using langchain in the bay area on linkedin and list their details"
+            )
+        }
+    )
     print(result)
 
 if __name__ == "__main__":
