@@ -112,7 +112,7 @@ def run_agent(question: str):
             options={"stop": ["\nObservation:"], "temperature": 0},
         )
         
-        output = response.message
+        output = response.message.content
         print(f"LLM Output: \n{output}")
 
 
